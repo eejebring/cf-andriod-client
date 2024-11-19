@@ -7,7 +7,6 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Button
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -28,7 +27,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             val navController = rememberNavController()
-            val loginToken: JWT? = null
+            val loginToken: GameService = GameService()
 
             CfandriodclientTheme(darkTheme = false) {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
@@ -41,7 +40,7 @@ class MainActivity : ComponentActivity() {
                                 MainView(navController, loginToken)
                             }
                             composable ( "login" ) {
-                                Login(navController, loginToken)
+                                LoginView(navController, loginToken)
                             }
                         }
                     }
@@ -52,20 +51,11 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun MainView(navController: NavController, loginToken: JWT?) {
-    Text("Hi")
+fun MainView(navController: NavController, gameService: GameService) {
+    Text("This is the barren main view")
 
-    if (loginToken == null || loginToken.isExpired(0)) {
+    if (!gameService.isLoggedIn()) {
         navController.navigate("login")
     }
 }
 
-@Composable
-fun Login(navController: NavController, loginToken: JWT?) {
-    Column {
-        Text("Login view")
-        Button(onClick = {navController.navigate("main")}) {
-            Text("Login!")
-        }
-    }
-}
