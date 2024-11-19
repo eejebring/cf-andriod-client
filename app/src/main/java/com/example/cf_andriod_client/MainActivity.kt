@@ -17,6 +17,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.auth0.android.jwt.JWT
 import com.example.cf_andriod_client.ui.theme.CfandriodclientTheme
 
 
@@ -27,6 +28,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             val navController = rememberNavController()
+            val loginToken: JWT? = null
 
             CfandriodclientTheme(darkTheme = false) {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
@@ -34,12 +36,12 @@ class MainActivity : ComponentActivity() {
                         .padding(innerPadding)
                         .padding(Dp(5F))) {
 
-                        NavHost(navController = navController, startDestination = "login") {
+                        NavHost(navController = navController, startDestination = "main") {
                             composable("main") {
-                                MainView()
+                                MainView(navController, loginToken)
                             }
                             composable ( "login" ) {
-                                Login(navController)
+                                Login(navController, loginToken)
                             }
                         }
                     }
@@ -50,12 +52,16 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun MainView() {
+fun MainView(navController: NavController, loginToken: JWT?) {
     Text("Hi")
+
+    if (loginToken == null || loginToken.isExpired(0)) {
+        navController.navigate("login")
+    }
 }
 
 @Composable
-fun Login(navController: NavController) {
+fun Login(navController: NavController, loginToken: JWT?) {
     Column {
         Text("Login view")
         Button(onClick = {navController.navigate("main")}) {
