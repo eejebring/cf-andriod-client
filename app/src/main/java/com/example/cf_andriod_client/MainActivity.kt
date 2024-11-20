@@ -52,7 +52,10 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun MainView(navController: NavController, gameService: GameService) {
-    Text("This is the barren main view")
+    Column {
+        Text("This is the barren main view")
+        Text("Logged in as ${gameService.getUsername()}")
+    }
 
     if (!gameService.isLoggedIn()) {
         navController.navigate("login")
