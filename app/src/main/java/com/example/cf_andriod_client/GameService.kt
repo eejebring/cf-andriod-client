@@ -14,7 +14,7 @@ const val loginUrl = "http://$gameServerUrl/login"
 
 class GameService {
 
-    val httpClient = HttpClient(CIO)
+    private val httpClient = HttpClient(CIO)
     private var loginToken: JWT? = null
 
     fun isLoggedIn(): Boolean {
@@ -29,7 +29,9 @@ class GameService {
             setBody(loginJson)
         }
 
-        println(response.status)
+        if (response.status.value != 200) {
+            throw Exception(response.body<String>())
+        }
 
         loginToken = JWT(response.body<String>())
     }

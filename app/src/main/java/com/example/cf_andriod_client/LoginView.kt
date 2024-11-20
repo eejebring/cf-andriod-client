@@ -1,6 +1,5 @@
 package com.example.cf_andriod_client
 
-import android.net.http.HttpEngine
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
@@ -10,20 +9,18 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.navigation.NavController
-import com.auth0.android.jwt.JWT
-import io.ktor.client.HttpClient
-import io.ktor.client.engine.cio.CIO
 import kotlinx.coroutines.launch
-import java.net.URL
 
 @Composable
 fun LoginView(navController: NavController, gameService: GameService) {
-    val coreruotineScope = rememberCoroutineScope()
+    val coroutineScope = rememberCoroutineScope()
     val username = remember { mutableStateOf("") }
     val passcode = remember { mutableStateOf("") }
+    val errorMessage = remember { mutableStateOf("") }
 
     Column {
         Text("Login view")
+        Text(errorMessage.value, color = androidx.compose.ui.graphics.Color.Red)
         TextField(
             value = username.value,
             onValueChange = { username.value = it },
@@ -35,8 +32,14 @@ fun LoginView(navController: NavController, gameService: GameService) {
             label = { Text("Passcode") }
         )
         Button(onClick = {
-            coreruotineScope.launch {
-                gameService.loggIn(username.value, passcode.value)
+            errorMessage.value = ""
+            coroutineScope.launch {
+                try {
+                    gameService.loggIn(username.value, passcode.value)
+                }
+                catch (e: Exception) {
+                    errorMessage.value = e.message ?: "Unknown error"
+                }
                 if (gameService.isLoggedIn()) {
                     navController.popBackStack()
                 }
