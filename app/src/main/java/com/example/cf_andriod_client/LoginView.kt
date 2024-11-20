@@ -12,7 +12,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavController
+import com.example.cf_andriod_client.ui.theme.Typography
 import kotlinx.coroutines.launch
 
 @Composable
@@ -24,8 +26,8 @@ fun LoginView(navController: NavController, gameService: GameService) {
 
     Box(contentAlignment = Alignment.CenterEnd) {
         Column(modifier = Modifier.fillMaxWidth()) {
-            Text("Login view")
-            Text(errorMessage.value, color = androidx.compose.ui.graphics.Color.Red)
+            Text("Login view", style = Typography.titleLarge, color = Color.Blue)
+            Text(errorMessage.value, color = Color.Red)
             TextField(
                 value = username.value,
                 onValueChange = { username.value = it },
@@ -40,7 +42,7 @@ fun LoginView(navController: NavController, gameService: GameService) {
                 errorMessage.value = ""
                 coroutineScope.launch {
                     try {
-                        gameService.loggIn(username.value, passcode.value)
+                        gameService.loggIn(Login(username.value, passcode.value))
                     } catch (e: Exception) {
                         errorMessage.value = e.message ?: "Unknown error"
                     }

@@ -4,7 +4,7 @@ import com.auth0.android.jwt.JWT
 
 class GameService {
 
-    private val connectionManager = ConnectionManager()
+    private val connectionManager = ConnectionService()
     private var loginToken: JWT? = null
 
     fun isLoggedIn(): Boolean {
@@ -17,6 +17,10 @@ class GameService {
 
     suspend fun createAccount(credentials: Login) {
         loginToken = connectionManager.fetchToken(credentials, createAccountUrl)
+    }
+
+    fun loggOut() {
+        loginToken = null
     }
 
     fun getUsername(): String {

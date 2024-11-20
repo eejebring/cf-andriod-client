@@ -7,6 +7,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Button
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -16,8 +17,9 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.auth0.android.jwt.JWT
 import com.example.cf_andriod_client.ui.theme.CfandriodclientTheme
+import com.example.cf_andriod_client.ui.theme.Typography
+import com.google.gson.Gson
 
 
 class MainActivity : ComponentActivity() {
@@ -27,7 +29,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             val navController = rememberNavController()
-            val loginToken: GameService = GameService()
+            val loginToken = GameService()
 
             CfandriodclientTheme(darkTheme = false) {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
@@ -53,8 +55,13 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun MainView(navController: NavController, gameService: GameService) {
     Column {
-        Text("This is the barren main view")
+        Text("This is the barren main view", style = Typography.titleLarge)
         Text("Logged in as ${gameService.getUsername()}")
+        Button(onClick = {
+            gameService.loggOut()
+        }) {
+            Text("Log out")
+        }
     }
 
     if (!gameService.isLoggedIn()) {
