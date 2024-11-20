@@ -53,6 +53,7 @@ dependencies {
     implementation(libs.jwtdecode)
     implementation(libs.ktor.client.core)
     implementation(libs.ktor.client.cio)
+    implementation(libs.gson)
 
 
     testImplementation(libs.junit)
