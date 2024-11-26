@@ -19,7 +19,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.cf_andriod_client.ui.theme.CfandriodclientTheme
 import com.example.cf_andriod_client.ui.theme.Typography
-import com.google.gson.Gson
+import kotlinx.coroutines.runBlocking
 
 
 class MainActivity : ComponentActivity() {
@@ -29,20 +29,22 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             val navController = rememberNavController()
-            val loginToken = GameService()
+            val gameService = GameService(applicationContext)
 
             CfandriodclientTheme(darkTheme = false) {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Column(modifier = Modifier
-                        .padding(innerPadding)
-                        .padding(Dp(5F))) {
+                    Column(
+                        modifier = Modifier
+                            .padding(innerPadding)
+                            .padding(Dp(5F))
+                    ) {
 
                         NavHost(navController = navController, startDestination = "main") {
                             composable("main") {
-                                MainView(navController, loginToken)
+                                MainView(navController, gameService)
                             }
-                            composable ( "login" ) {
-                                LoginView(navController, loginToken)
+                            composable("login") {
+                                LoginView(navController, gameService)
                             }
                         }
                     }
@@ -58,14 +60,21 @@ fun MainView(navController: NavController, gameService: GameService) {
         Text("This is the barren main view", style = Typography.titleLarge)
         Text("Logged in as ${gameService.getUsername()}")
         Button(onClick = {
-            gameService.loggOut()
+            runBlocking {
+                gameService.loggOut()
+            }
         }) {
             Text("Log out")
         }
     }
 
-    if (!gameService.isLoggedIn()) {
-        navController.navigate("login")
+    runBlocking {
+        if (!gameService.isLoggedIn()) {
+            gameService.loadToken()
+            if (!gameService.isLoggedIn()) {
+                navController.navigate("login")
+            }
+        }
     }
 }
 

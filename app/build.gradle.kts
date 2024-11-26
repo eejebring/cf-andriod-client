@@ -54,6 +54,7 @@ dependencies {
     implementation(libs.ktor.client.core)
     implementation(libs.ktor.client.cio)
     implementation(libs.gson)
+    implementation(libs.androidx.datastore.preferences)
 
 
     testImplementation(libs.junit)

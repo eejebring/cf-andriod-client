@@ -1,8 +1,10 @@
 package com.example.cf_andriod_client
 
+import android.content.Context
+import androidx.lifecycle.ViewModel
 import com.auth0.android.jwt.JWT
 
-class GameService {
+class GameService(private val appContext: Context) : ViewModel() {
 
     private val connectionManager = ConnectionService()
     private var loginToken: JWT? = null
@@ -13,14 +15,20 @@ class GameService {
 
     suspend fun loggIn(credentials: Login) {
         loginToken = connectionManager.fetchToken(credentials, loginUrl)
+        DataService.saveToken(appContext, loginToken!!)
+    }
+
+    suspend fun loadToken() {
+        loginToken = DataService.readToken(appContext)
     }
 
     suspend fun createAccount(credentials: Login) {
         loginToken = connectionManager.fetchToken(credentials, createAccountUrl)
     }
 
-    fun loggOut() {
+    suspend fun loggOut() {
         loginToken = null
+        DataService.saveToken(appContext, JWT(""))
     }
 
     fun getUsername(): String {

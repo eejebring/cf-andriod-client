@@ -15,7 +15,7 @@ const val gameServerUrl = "http://cf.ejebring.com"
 val loginUrl = Url("$gameServerUrl/login")
 val createAccountUrl = Url("$gameServerUrl/createAccount")
 
-class ConnectionManager {
+class ConnectionService {
 
     private val gson = Gson()
     private val httpClient = HttpClient(CIO)
