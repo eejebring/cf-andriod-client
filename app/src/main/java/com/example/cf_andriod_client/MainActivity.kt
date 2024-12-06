@@ -46,6 +46,9 @@ class MainActivity : ComponentActivity() {
                             composable("login") {
                                 LoginView(navController, gameService)
                             }
+                            composable("createAccount") {
+                                CreateAccountView(navController, gameService)
+                            }
                         }
                     }
                 }
@@ -56,6 +59,7 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun MainView(navController: NavController, gameService: GameService) {
+
     Column {
         Text("This is the barren main view", style = Typography.titleLarge)
         Text("Logged in as ${gameService.getUsername()}")

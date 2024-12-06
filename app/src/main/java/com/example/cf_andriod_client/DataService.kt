@@ -23,6 +23,12 @@ object DataService {
         }
     }
 
+    suspend fun removeToken(context: Context) {
+        context.dataStore.edit { loginToken ->
+            loginToken.remove(key)
+        }
+    }
+
     suspend fun readToken(context: Context): JWT? {
         return (context.dataStore.data.map {
             if (it[key] != null) {

@@ -24,11 +24,12 @@ class GameService(private val appContext: Context) : ViewModel() {
 
     suspend fun createAccount(credentials: Login) {
         loginToken = connectionManager.fetchToken(credentials, createAccountUrl)
+        DataService.saveToken(appContext, loginToken!!)
     }
 
     suspend fun loggOut() {
         loginToken = null
-        DataService.saveToken(appContext, JWT(""))
+        DataService.removeToken(appContext)
     }
 
     fun getUsername(): String {

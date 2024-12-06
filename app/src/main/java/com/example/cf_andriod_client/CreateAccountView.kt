@@ -18,7 +18,7 @@ import com.example.cf_andriod_client.ui.theme.Typography
 import kotlinx.coroutines.launch
 
 @Composable
-fun LoginView(navController: NavController, gameService: GameService) {
+fun CreateAccountView(navController: NavController, gameService: GameService) {
     val coroutineScope = rememberCoroutineScope()
     val username = remember { mutableStateOf("") }
     val passcode = remember { mutableStateOf("") }
@@ -26,7 +26,7 @@ fun LoginView(navController: NavController, gameService: GameService) {
 
     Box(contentAlignment = Alignment.CenterEnd) {
         Column(modifier = Modifier.fillMaxWidth()) {
-            Text("Login view", style = Typography.titleLarge, color = Color.Blue)
+            Text("Create account view", style = Typography.titleLarge, color = Color.Blue)
             Text(errorMessage.value, color = Color.Red)
             TextField(
                 value = username.value,
@@ -42,21 +42,17 @@ fun LoginView(navController: NavController, gameService: GameService) {
                 errorMessage.value = ""
                 coroutineScope.launch {
                     try {
-                        gameService.loggIn(Login(username.value, passcode.value))
+                        gameService.createAccount(Login(username.value, passcode.value))
                     } catch (e: Exception) {
                         errorMessage.value = e.message ?: "Unknown error"
                     }
                     if (gameService.isLoggedIn()) {
                         navController.popBackStack()
+                        navController.popBackStack()
                     }
                 }
             }) {
-                Text("Login!")
-            }
-            Button(onClick = {
-                navController.navigate("createAccount")
-            }) {
-                Text("Create account")
+                Text("Create account!")
             }
         }
     }

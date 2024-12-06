@@ -13,7 +13,7 @@ import io.ktor.http.contentType
 
 const val gameServerUrl = "http://cf.ejebring.com"
 val loginUrl = Url("$gameServerUrl/login")
-val createAccountUrl = Url("$gameServerUrl/createAccount")
+val createAccountUrl = Url("$gameServerUrl/user")
 
 class ConnectionService {
 
