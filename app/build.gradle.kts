@@ -10,7 +10,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.cf_andriod_client"
-        minSdk = 24
+        minSdk = 26
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -53,7 +53,9 @@ dependencies {
     implementation(libs.jwtdecode)
     implementation(libs.ktor.client.core)
     implementation(libs.ktor.client.cio)
+    implementation(libs.ktor.client.content.negotiation)
     implementation(libs.gson)
+    implementation(libs.ktor.serialization.gson)
     implementation(libs.androidx.datastore.preferences)
 
 

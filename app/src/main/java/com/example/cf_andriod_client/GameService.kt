@@ -51,4 +51,8 @@ class GameService : ViewModel() {
             "Unknown username"
         }
     }
+
+    suspend fun getPlayers(): Array<Player> {
+        return connectionManager.fetchPlayers()
+    }
 }
