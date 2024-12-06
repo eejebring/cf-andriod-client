@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -29,7 +30,8 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             val navController = rememberNavController()
-            val gameService = GameService(applicationContext)
+            val gameService: GameService by viewModels()
+            gameService.init(applicationContext)
 
             CfandriodclientTheme(darkTheme = false) {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
@@ -59,25 +61,25 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun MainView(navController: NavController, gameService: GameService) {
-
-    Column {
-        Text("This is the barren main view", style = Typography.titleLarge)
-        Text("Logged in as ${gameService.getUsername()}")
-        Button(onClick = {
-            runBlocking {
-                gameService.loggOut()
+    if (gameService.isLoggedIn()) {
+        Column {
+            Text("This is the barren main view", style = Typography.titleLarge)
+            Text("Logged in as ${gameService.getUsername()}")
+            Button(onClick = {
+                runBlocking {
+                    gameService.loggOut()
+                    navController.navigate("login") {
+                        popUpTo("login") { inclusive = true }
+                    }
+                }
+            }) {
+                Text("Log out")
             }
-        }) {
-            Text("Log out")
         }
-    }
-
-    runBlocking {
-        if (!gameService.isLoggedIn()) {
-            gameService.loadToken()
-            if (!gameService.isLoggedIn()) {
-                navController.navigate("login")
-            }
+    } else {
+        runBlocking { gameService.loadToken() }
+        Button(onClick = { navController.navigate("login") }) {
+            Text("Log in")
         }
     }
 }

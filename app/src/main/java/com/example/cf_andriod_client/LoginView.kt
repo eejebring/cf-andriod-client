@@ -47,7 +47,9 @@ fun LoginView(navController: NavController, gameService: GameService) {
                         errorMessage.value = e.message ?: "Unknown error"
                     }
                     if (gameService.isLoggedIn()) {
-                        navController.popBackStack()
+                        navController.navigate("main") {
+                            popUpTo("main") { inclusive = true }
+                        }
                     }
                 }
             }) {
