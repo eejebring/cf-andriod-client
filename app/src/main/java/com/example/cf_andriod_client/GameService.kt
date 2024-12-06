@@ -55,4 +55,17 @@ class GameService : ViewModel() {
     suspend fun getPlayers(): Array<Player> {
         return connectionManager.fetchPlayers()
     }
+
+    suspend fun getGames(): List<Game> {
+        val gameIds = connectionManager.fetchGameIds(loginToken.value!!)
+        val games = mutableListOf<Game>()
+
+        for (id in gameIds) {
+            games.add(
+                connectionManager.fetchGame(id, loginToken.value!!)
+            )
+        }
+
+        return games.toList()
+    }
 }

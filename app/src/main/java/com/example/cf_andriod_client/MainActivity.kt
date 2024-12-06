@@ -90,55 +90,87 @@ fun MainView(navController: NavController, gameService: GameService) {
                     Text("Log out")
                 }
             }
+            GamesList(gameService)
+            PlayerList(gameService)
 
-            val players = remember { mutableStateListOf<Player>() }
-
-            val scope = rememberCoroutineScope()
-            LaunchedEffect(scope) {
-                while (true) {
-                    val newPlayers = gameService.getPlayers()
-                    players.clear()
-                    players.addAll(newPlayers)
-                    delay(1000)
-                }
-            }
-
-            Text("Players:")
-            LazyColumn {
-                for (player in players) {
-                    val isMe = player.name == gameService.getUsername()
-                    val baseBoxModifier =
-                        Modifier
-                            .padding(Dp(5F))
-                            .fillMaxWidth()
-                            .background(Color.Cyan)
-                    item {
-                        Box(
-                            modifier = if (isMe) baseBoxModifier.background(Color.Green) else baseBoxModifier
-                        ) {
-                            Column {
-                                Row {
-                                    Text(player.name)
-                                    Text("Wins: ${player.wins}")
-                                }
-                                Text(
-                                    "Last seen: ${
-                                        ChronoUnit.SECONDS.between(
-                                            LocalDateTime.parse(player.updatedAt),
-                                            LocalDateTime.now()
-                                        )
-                                    } seconds ago"
-                                )
-                            }
-                        }
-                    }
-                }
-            }
         }
     } else {
         runBlocking { gameService.loadToken() }
         Button(onClick = { navController.navigate("login") }) {
             Text("Log in")
+        }
+    }
+}
+
+@Composable
+fun PlayerList(gameService: GameService) {
+
+    val players = remember { mutableStateListOf<Player>() }
+
+    val scope = rememberCoroutineScope()
+    LaunchedEffect(scope) {
+        while (true) {
+            val newPlayers = gameService.getPlayers()
+            players.clear()
+            players.addAll(newPlayers)
+            delay(1000)
+        }
+    }
+
+    Text("Players:")
+    LazyColumn {
+        for (player in players) {
+            val isMe = player.name == gameService.getUsername()
+            val baseBoxModifier =
+                Modifier
+                    .padding(Dp(5F))
+                    .fillMaxWidth()
+                    .background(Color.Cyan)
+            item {
+                Box(
+                    modifier = if (isMe) baseBoxModifier.background(Color.Green) else baseBoxModifier
+                ) {
+                    Column {
+                        Row {
+                            Text(player.name)
+                            Text("Wins: ${player.wins}")
+                        }
+                        Text(
+                            "Last seen: ${
+                                ChronoUnit.SECONDS.between(
+                                    LocalDateTime.parse(player.updatedAt),
+                                    LocalDateTime.now()
+                                )
+                            } seconds ago"
+                        )
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun GamesList(gameService: GameService) {
+    val games = remember { mutableStateListOf<Game>() }
+
+    val scope = rememberCoroutineScope()
+    LaunchedEffect(scope) {
+        while (true) {
+            val newGames = gameService.getGames()
+            games.clear()
+            games.addAll(newGames)
+            delay(1000)
+        }
+    }
+
+    Text("Active games:")
+    LazyColumn {
+        for (game in games) {
+
+            item {
+                Text("Game: ${game.redPlayer} vs ${game.yellowPlayer}")
+            }
         }
     }
 }
