@@ -58,7 +58,14 @@ class GameService : ViewModel() {
             return connectionManager.fetchPlayers()
         } catch (e: Exception) {
             println(e.message)
-            return arrayOf(Player("Cannot connect to server", 0, LocalDateTime.now().toString()))
+            return arrayOf(
+                Player(
+                    "Cannot connect to server",
+                    0,
+                    false,
+                    LocalDateTime.now().toString()
+                )
+            )
         }
     }
 

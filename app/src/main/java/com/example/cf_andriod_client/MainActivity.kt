@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Button
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -26,7 +25,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.cf_andriod_client.ui.theme.CfandriodclientTheme
+import com.example.cf_andriod_client.ui.theme.CfAndriodClientTheme
 import com.example.cf_andriod_client.ui.theme.Typography
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
@@ -42,7 +41,7 @@ class MainActivity : ComponentActivity() {
             val gameService: GameService by viewModels()
             gameService.init(applicationContext)
 
-            CfandriodclientTheme(darkTheme = false) {
+            CfAndriodClientTheme(darkTheme = false) {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     Column(
                         modifier = Modifier
@@ -116,11 +115,16 @@ fun GamesList(gameService: GameService) {
     }
 
     Text("Active games:")
-    LazyColumn {
+    Column {
         for (game in games) {
+            val amRedPlayer = game.redPlayer == gameService.getUsername()
+            val isLocalTurn = game.redPlayedLast == amRedPlayer
 
-            item {
-                Text("Game: ${game.redPlayer} vs ${game.yellowPlayer}")
+            Button(
+                onClick = {},
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text("${if (isLocalTurn) "Your turn:" else "Opponent's turn:"} ${game.redPlayer} vs ${game.yellowPlayer}")
             }
         }
     }
