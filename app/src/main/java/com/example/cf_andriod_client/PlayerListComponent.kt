@@ -65,9 +65,9 @@ fun PlayerList(gameService: GameService) {
                     Column {
                         Row {
                             Text(player.name)
-                            Text("Wins: ${player.wins}")
+                            if (player.name != "Cannot connect to server") Text("Wins: ${player.wins}")
                         }
-                        Text(
+                        if (player.name != "Cannot connect to server") Text(
                             if (seenSecondsAgo < 10)
                                 "Online now!"
                             else if (seenSecondsAgo < 60)
@@ -79,7 +79,7 @@ fun PlayerList(gameService: GameService) {
 
                         )
                     }
-                    if (!isMe) {
+                    if (!isMe && player.name != "Cannot connect to server") {
                         val challengeText =
                             if (challenges.any { challenge -> challenge.challenger == player.name })
                                 "Accept challenge"

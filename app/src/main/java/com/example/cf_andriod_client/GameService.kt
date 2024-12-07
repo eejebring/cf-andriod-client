@@ -6,6 +6,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import com.auth0.android.jwt.JWT
 import kotlinx.coroutines.flow.MutableStateFlow
+import java.time.LocalDateTime
 
 class GameService : ViewModel() {
 
@@ -57,7 +58,7 @@ class GameService : ViewModel() {
             return connectionManager.fetchPlayers()
         } catch (e: Exception) {
             println(e.message)
-            return arrayOf(Player("Cannot connect to server", 0, "Unknown"))
+            return arrayOf(Player("Cannot connect to server", 0, LocalDateTime.now().toString()))
         }
     }
 
@@ -79,10 +80,10 @@ class GameService : ViewModel() {
     }
 
     suspend fun getGames(): List<Game> {
-        val gameIds = connectionManager.fetchGameIds(loginToken.value!!)
         val games = mutableListOf<Game>()
 
         try {
+            val gameIds = connectionManager.fetchGameIds(loginToken.value!!)
             for (id in gameIds) {
                 games.add(
                     connectionManager.fetchGame(id, loginToken.value!!)

@@ -87,7 +87,7 @@ fun MainView(navController: NavController, gameService: GameService) {
             }
         }
         Column {
-            Text("This is the barren main view", style = Typography.titleLarge)
+            Text("Welcome to the Lobby", style = Typography.titleLarge)
             Text("Logged in as ${gameService.getUsername()}")
             GamesList(gameService)
             PlayerList(gameService)
