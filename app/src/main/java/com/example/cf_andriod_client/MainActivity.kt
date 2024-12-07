@@ -25,6 +25,8 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.cf_andriod_client.Services.GameService
+import com.example.cf_andriod_client.classes.Game
 import com.example.cf_andriod_client.ui.theme.CfAndriodClientTheme
 import com.example.cf_andriod_client.ui.theme.Typography
 import kotlinx.coroutines.delay

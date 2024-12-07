@@ -1,10 +1,14 @@
-package com.example.cf_andriod_client
+package com.example.cf_andriod_client.Services
 
 import android.content.Context
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import com.auth0.android.jwt.JWT
+import com.example.cf_andriod_client.classes.Challenge
+import com.example.cf_andriod_client.classes.Game
+import com.example.cf_andriod_client.classes.Login
+import com.example.cf_andriod_client.classes.Player
 import kotlinx.coroutines.flow.MutableStateFlow
 import java.time.LocalDateTime
 

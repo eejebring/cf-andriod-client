@@ -1,4 +1,4 @@
-package com.example.cf_andriod_client
+package com.example.cf_andriod_client.classes
 
 data class Player(
     val name: String,

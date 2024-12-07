@@ -14,6 +14,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavController
+import com.example.cf_andriod_client.Services.GameService
+import com.example.cf_andriod_client.classes.Login
 import com.example.cf_andriod_client.ui.theme.Typography
 import kotlinx.coroutines.launch
 

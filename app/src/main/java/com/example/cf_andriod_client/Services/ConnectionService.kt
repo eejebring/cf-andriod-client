@@ -1,6 +1,10 @@
-package com.example.cf_andriod_client
+package com.example.cf_andriod_client.Services
 
 import com.auth0.android.jwt.JWT
+import com.example.cf_andriod_client.classes.Challenge
+import com.example.cf_andriod_client.classes.Game
+import com.example.cf_andriod_client.classes.Login
+import com.example.cf_andriod_client.classes.Player
 import com.google.gson.Gson
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
