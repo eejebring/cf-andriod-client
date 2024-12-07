@@ -53,25 +53,43 @@ class GameService : ViewModel() {
     }
 
     suspend fun getPlayers(): Array<Player> {
-        return connectionManager.fetchPlayers()
+        try {
+            return connectionManager.fetchPlayers()
+        } catch (e: Exception) {
+            println(e.message)
+            return arrayOf(Player("Cannot connect to server", 0, "Unknown"))
+        }
     }
 
     suspend fun getChallenges(): Array<Challenge> {
-        return connectionManager.getChallenges(loginToken.value!!)
+        try {
+            return connectionManager.getChallenges(loginToken.value!!)
+        } catch (e: Exception) {
+            println(e.message)
+            return emptyArray()
+        }
     }
 
     suspend fun challenge(opponent: String) {
-        connectionManager.challenge(loginToken.value!!, opponent)
+        try {
+            connectionManager.challenge(loginToken.value!!, opponent)
+        } catch (e: Exception) {
+            println(e.message)
+        }
     }
 
     suspend fun getGames(): List<Game> {
         val gameIds = connectionManager.fetchGameIds(loginToken.value!!)
         val games = mutableListOf<Game>()
 
-        for (id in gameIds) {
-            games.add(
-                connectionManager.fetchGame(id, loginToken.value!!)
-            )
+        try {
+            for (id in gameIds) {
+                games.add(
+                    connectionManager.fetchGame(id, loginToken.value!!)
+                )
+            }
+        } catch (e: Exception) {
+            println(e.message)
         }
 
         return games.toList()
