@@ -5,10 +5,8 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -21,8 +19,8 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
@@ -32,8 +30,6 @@ import com.example.cf_andriod_client.ui.theme.CfandriodclientTheme
 import com.example.cf_andriod_client.ui.theme.Typography
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
-import java.time.LocalDateTime
-import java.time.temporal.ChronoUnit
 
 
 class MainActivity : ComponentActivity() {
@@ -75,21 +71,24 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun MainView(navController: NavController, gameService: GameService) {
     if (gameService.isLoggedIn()) {
-        Column {
-            Text("This is the barren main view", style = Typography.titleLarge)
-            Row {
-                Text("Logged in as ${gameService.getUsername()}")
-                Button(onClick = {
+        Box(modifier = Modifier.fillMaxWidth()) {
+            Button(
+                onClick = {
                     runBlocking {
                         gameService.loggOut()
                         navController.navigate("login") {
                             popUpTo("login") { inclusive = true }
                         }
                     }
-                }) {
-                    Text("Log out")
-                }
+                },
+                modifier = Modifier.align(Alignment.TopEnd)
+            ) {
+                Text("Log out")
             }
+        }
+        Column {
+            Text("This is the barren main view", style = Typography.titleLarge)
+            Text("Logged in as ${gameService.getUsername()}")
             GamesList(gameService)
             PlayerList(gameService)
 
@@ -98,54 +97,6 @@ fun MainView(navController: NavController, gameService: GameService) {
         runBlocking { gameService.loadToken() }
         Button(onClick = { navController.navigate("login") }) {
             Text("Log in")
-        }
-    }
-}
-
-@Composable
-fun PlayerList(gameService: GameService) {
-
-    val players = remember { mutableStateListOf<Player>() }
-
-    val scope = rememberCoroutineScope()
-    LaunchedEffect(scope) {
-        while (true) {
-            val newPlayers = gameService.getPlayers()
-            players.clear()
-            players.addAll(newPlayers)
-            delay(1000)
-        }
-    }
-
-    Text("Players:")
-    LazyColumn {
-        for (player in players) {
-            val isMe = player.name == gameService.getUsername()
-            val baseBoxModifier =
-                Modifier
-                    .padding(Dp(5F))
-                    .fillMaxWidth()
-                    .background(Color.Cyan)
-            item {
-                Box(
-                    modifier = if (isMe) baseBoxModifier.background(Color.Green) else baseBoxModifier
-                ) {
-                    Column {
-                        Row {
-                            Text(player.name)
-                            Text("Wins: ${player.wins}")
-                        }
-                        Text(
-                            "Last seen: ${
-                                ChronoUnit.SECONDS.between(
-                                    LocalDateTime.parse(player.updatedAt),
-                                    LocalDateTime.now()
-                                )
-                            } seconds ago"
-                        )
-                    }
-                }
-            }
         }
     }
 }

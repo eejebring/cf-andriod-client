@@ -56,6 +56,14 @@ class GameService : ViewModel() {
         return connectionManager.fetchPlayers()
     }
 
+    suspend fun getChallenges(): Array<Challenge> {
+        return connectionManager.getChallenges(loginToken.value!!)
+    }
+
+    suspend fun challenge(opponent: String) {
+        connectionManager.challenge(loginToken.value!!, opponent)
+    }
+
     suspend fun getGames(): List<Game> {
         val gameIds = connectionManager.fetchGameIds(loginToken.value!!)
         val games = mutableListOf<Game>()

@@ -20,6 +20,9 @@ val createAccountUrl = Url("$gameServerUrl/user")
 val playersUrl = Url("$gameServerUrl/users")
 val gamesUrl = Url("$gameServerUrl/games")
 val gameUrl = Url("$gameServerUrl/game")
+val challengesUrl = Url("$gameServerUrl/challenges")
+val challengeUrl = Url("$gameServerUrl/challenge")
+val makeMoveUrl = Url("$gameServerUrl/move")
 
 class ConnectionService {
 
@@ -83,4 +86,29 @@ class ConnectionService {
         return gson.fromJson(response.body<String>(), Game::class.java)
     }
 
+    suspend fun getChallenges(loginToken: JWT): Array<Challenge> {
+        val response = httpClient.get(challengesUrl) {
+            headers {
+                append("Authorization", "Bearer $loginToken")
+            }
+        }
+        if (response.status.value != 200) {
+            throw Exception(response.body<String>())
+        }
+
+        println("Challenges: ${response.body<String>()}")
+
+        return gson.fromJson(response.body<String>(), Array<Challenge>::class.java)
+    }
+
+    suspend fun challenge(loginToken: JWT, opponent: String) {
+        val response = httpClient.post("$challengeUrl/$opponent") {
+            headers {
+                append("Authorization", "Bearer $loginToken")
+            }
+        }
+        if (response.status.value != 200 && response.status.value != 202) {
+            throw Exception("${response.status.value}: ${response.body<String>()}")
+        }
+    }
 }
