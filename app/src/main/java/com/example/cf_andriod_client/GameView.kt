@@ -122,9 +122,9 @@ fun GamesList(gameService: GameService, navController: NavController, gameId: In
                             },
                             center = Offset(
                                 x = size.width / 8 * xCursor,
-                                y = size.height / 8 * yCursor
+                                y = size.height / 7 * yCursor
                             ),
-                            radius = size.minDimension / 18
+                            radius = size.minDimension / 17
                         )
 
                         xCursor++
