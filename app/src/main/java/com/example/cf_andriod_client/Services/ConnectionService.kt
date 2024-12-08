@@ -45,8 +45,12 @@ class ConnectionService {
             setBody(gson.toJson(credentials))
         }
 
+        if (response.status.value == 502) {
+            throw Exception("Game server is unavailable")
+        }
+
         if (response.status.value != 200) {
-            throw Exception("${response.status.value}: ${response.body<String>()}")
+            throw Exception(response.body<String>())
         }
 
         return JWT(response.body<String>())
