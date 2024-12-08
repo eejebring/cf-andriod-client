@@ -60,7 +60,7 @@ fun GamesList(gameService: GameService, navController: NavController, gameId: In
             .verticalScroll(rememberScrollState())
     ) {
         val amRedPlayer = game.value.redPlayer == gameService.getUsername()
-        val isLocalTurn = game.value.isRedTurn != amRedPlayer
+        val isLocalTurn = game.value.isRedTurn == amRedPlayer
 
         Row {
             Icon(
@@ -74,7 +74,11 @@ fun GamesList(gameService: GameService, navController: NavController, gameId: In
             )
         }
         Row {
-            Text(if (isLocalTurn) "Your turn" else "Opponent's turn")
+            Text(
+                if (game.value.winner != "TBD") "${game.value.winner} is victorious!"
+                else if (isLocalTurn) "Your turn"
+                else "Opponent's turn"
+            )
             Text(userError.value, color = Color.Red)
         }
         Box(
@@ -94,7 +98,8 @@ fun GamesList(gameService: GameService, navController: NavController, gameId: In
                                     }
                                 }
                             },
-                            modifier = Modifier.weight(1F)
+                            modifier = Modifier.weight(1F),
+                            enabled = game.value.winner == "TBD" && isLocalTurn
                         ) {
                             Icon(
                                 Icons.Filled.KeyboardArrowDown,

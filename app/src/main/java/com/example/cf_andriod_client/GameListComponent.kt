@@ -34,14 +34,18 @@ fun GamesList(gameService: GameService, navController: NavController) {
     LazyColumn {
         for ((gameId, game) in games) {
             val amRedPlayer = game.redPlayer == gameService.getUsername()
-            val isLocalTurn = game.isRedTurn != amRedPlayer
+            val isLocalTurn = game.isRedTurn == amRedPlayer
 
             item {
                 Button(
                     onClick = { navController.navigate("game/${gameId}") },
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    Text("${if (isLocalTurn) "Your turn:" else "Opponent's turn:"} ${game.redPlayer} vs ${game.yellowPlayer}")
+                    Text(
+                        if (game.winner != "TBD")
+                            "${game.winner} won!"
+                        else "${if (isLocalTurn) "Your turn:" else "Opponent's turn:"} ${game.redPlayer} vs ${game.yellowPlayer}"
+                    )
                 }
             }
         }
