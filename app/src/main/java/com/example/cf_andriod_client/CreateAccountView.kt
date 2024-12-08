@@ -1,9 +1,13 @@
 package com.example.cf_andriod_client
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.Button
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
@@ -26,8 +30,15 @@ fun CreateAccountView(navController: NavController, gameService: GameService) {
     val passcode = remember { mutableStateOf("") }
     val errorMessage = remember { mutableStateOf("") }
 
-    Box(contentAlignment = Alignment.CenterEnd) {
-        Column(modifier = Modifier.fillMaxWidth()) {
+    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+        Icon(
+            Icons.AutoMirrored.Filled.ArrowBack,
+            contentDescription = "Back to main menu",
+            modifier = Modifier
+                .align(Alignment.TopStart)
+                .clickable { navController.popBackStack() }
+        )
+        Column {
             Text("Create account view", style = Typography.titleLarge, color = Color.Blue)
             Text(errorMessage.value, color = Color.Red)
             TextField(
