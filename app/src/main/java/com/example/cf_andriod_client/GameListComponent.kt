@@ -10,14 +10,15 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.navigation.NavController
 import com.example.cf_andriod_client.Services.GameService
 import com.example.cf_andriod_client.classes.Game
 import kotlinx.coroutines.delay
 
 
 @Composable
-fun GamesList(gameService: GameService) {
-    val games = remember { mutableStateListOf<Game>() }
+fun GamesList(gameService: GameService, navController: NavController) {
+    val games = remember { mutableStateListOf<Pair<Int, Game>>() }
 
     val scope = rememberCoroutineScope()
     LaunchedEffect(scope) {
@@ -31,13 +32,13 @@ fun GamesList(gameService: GameService) {
 
     Text("Active games:")
     LazyColumn {
-        for (game in games) {
+        for ((gameId, game) in games) {
             val amRedPlayer = game.redPlayer == gameService.getUsername()
-            val isLocalTurn = game.redPlayedLast == amRedPlayer
+            val isLocalTurn = game.redPlayedLast != amRedPlayer
 
             item {
                 Button(
-                    onClick = {},
+                    onClick = { navController.navigate("game/${gameId}") },
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     Text("${if (isLocalTurn) "Your turn:" else "Opponent's turn:"} ${game.redPlayer} vs ${game.yellowPlayer}")

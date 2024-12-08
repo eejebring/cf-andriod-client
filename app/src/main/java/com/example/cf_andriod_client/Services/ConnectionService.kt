@@ -44,7 +44,7 @@ class ConnectionService {
         }
 
         if (response.status.value != 200) {
-            throw Exception(response.body<String>())
+            throw Exception("${response.status.value}: ${response.body<String>()}")
         }
 
         return JWT(response.body<String>())
@@ -54,9 +54,8 @@ class ConnectionService {
         val response = httpClient.get(playersUrl)
 
         if (response.status.value != 200) {
-            throw Exception(response.body<String>())
+            throw Exception("${response.status.value}: ${response.body<String>()}")
         }
-        println("Players: ${response.body<String>()}")
 
         return gson.fromJson(response.body<String>(), Array<Player>::class.java)
     }
@@ -69,7 +68,7 @@ class ConnectionService {
         }
 
         if (response.status.value != 200) {
-            throw Exception(response.body<String>())
+            throw Exception("${response.status.value}: ${response.body<String>()}")
         }
         println("Players: ${response.body<String>()}")
 
@@ -84,7 +83,7 @@ class ConnectionService {
         }
 
         if (response.status.value != 200) {
-            throw Exception(response.body<String>())
+            throw Exception("${response.status.value}: ${response.body<String>()}")
         }
 
         return gson.fromJson(response.body<String>(), Game::class.java)
@@ -97,7 +96,7 @@ class ConnectionService {
             }
         }
         if (response.status.value != 200) {
-            throw Exception(response.body<String>())
+            throw Exception("${response.status.value}: ${response.body<String>()}")
         }
 
         println("Challenges: ${response.body<String>()}")
@@ -113,6 +112,17 @@ class ConnectionService {
         }
         if (response.status.value != 200 && response.status.value != 202) {
             throw Exception("${response.status.value}: ${response.body<String>()}")
+        }
+    }
+
+    suspend fun makeMove(gameId: Int, column: Int, loginToken: JWT) {
+        val response = httpClient.post("$makeMoveUrl/$gameId/$column") {
+            headers {
+                append("Authorization", "Bearer $loginToken")
+            }
+        }
+        if (response.status.value != 200) {
+            throw Exception("   ${response.body<String>()}")
         }
     }
 }

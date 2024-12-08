@@ -57,6 +57,7 @@ dependencies {
     implementation(libs.gson)
     implementation(libs.ktor.serialization.gson)
     implementation(libs.androidx.datastore.preferences)
+    implementation(libs.ui.graphics)
 
 
     testImplementation(libs.junit)

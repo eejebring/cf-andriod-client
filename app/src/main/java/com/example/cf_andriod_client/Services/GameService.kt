@@ -90,14 +90,17 @@ class GameService : ViewModel() {
         }
     }
 
-    suspend fun getGames(): List<Game> {
-        val games = mutableListOf<Game>()
+    suspend fun getGames(): List<Pair<Int, Game>> {
+        val games = mutableListOf<Pair<Int, Game>>()
 
         try {
             val gameIds = connectionManager.fetchGameIds(loginToken.value!!)
             for (id in gameIds) {
                 games.add(
-                    connectionManager.fetchGame(id, loginToken.value!!)
+                    Pair(
+                        id,
+                        connectionManager.fetchGame(id, loginToken.value!!)
+                    )
                 )
             }
         } catch (e: Exception) {
@@ -105,5 +108,18 @@ class GameService : ViewModel() {
         }
 
         return games.toList()
+    }
+
+    suspend fun getGame(gameId: Int): Game {
+        try {
+            return connectionManager.fetchGame(gameId, loginToken.value!!)
+        } catch (e: Exception) {
+            println(e.message)
+            return Game()
+        }
+    }
+
+    suspend fun makeMove(gameId: Int, column: Int) {
+        connectionManager.makeMove(gameId, column, loginToken.value!!)
     }
 }

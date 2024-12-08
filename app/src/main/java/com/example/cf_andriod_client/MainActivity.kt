@@ -55,6 +55,11 @@ class MainActivity : ComponentActivity() {
                             composable("createAccount") {
                                 CreateAccountView(navController, gameService)
                             }
+                            composable("game/{id}") {
+                                val id = it.arguments?.getString("id")?.toInt()
+                                    ?: throw Exception("No gameId provided for navigation")
+                                GamesList(gameService, id)
+                            }
                         }
                     }
                 }
@@ -84,14 +89,16 @@ fun MainView(navController: NavController, gameService: GameService) {
         Column {
             Text("Welcome to the Lobby", style = Typography.titleLarge)
             Text("Logged in as ${gameService.getUsername()}")
-            GamesList(gameService)
+            GamesList(gameService, navController)
             PlayerList(gameService)
 
         }
     } else {
         runBlocking { gameService.loadToken() }
-        Button(onClick = { navController.navigate("login") }) {
-            Text("Log in")
+        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+            Button(onClick = { navController.navigate("login") }) {
+                Text("Log in", style = Typography.titleLarge)
+            }
         }
     }
 }

@@ -2,7 +2,7 @@ package com.example.cf_andriod_client
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -27,40 +27,43 @@ fun LoginView(navController: NavController, gameService: GameService) {
     val errorMessage = remember { mutableStateOf("") }
 
     Box(contentAlignment = Alignment.CenterEnd) {
-        Column(modifier = Modifier.fillMaxWidth()) {
-            Text("Login view", style = Typography.titleLarge, color = Color.Blue)
-            Text(errorMessage.value, color = Color.Red)
-            TextField(
-                value = username.value,
-                onValueChange = { username.value = it },
-                label = { Text("Username") }
-            )
-            TextField(
-                value = passcode.value,
-                onValueChange = { passcode.value = it },
-                label = { Text("Passcode") }
-            )
-            Button(onClick = {
-                errorMessage.value = ""
-                coroutineScope.launch {
-                    try {
-                        gameService.loggIn(Login(username.value, passcode.value))
-                    } catch (e: Exception) {
-                        errorMessage.value = e.message ?: "Unknown error"
-                    }
-                    if (gameService.isLoggedIn()) {
-                        navController.navigate("main") {
-                            popUpTo("main") { inclusive = true }
+
+        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+            Column {
+                Text("Login view", style = Typography.titleLarge, color = Color.Blue)
+                Text(errorMessage.value, color = Color.Red)
+                TextField(
+                    value = username.value,
+                    onValueChange = { username.value = it },
+                    label = { Text("Username") }
+                )
+                TextField(
+                    value = passcode.value,
+                    onValueChange = { passcode.value = it },
+                    label = { Text("Passcode") }
+                )
+                Button(onClick = {
+                    errorMessage.value = ""
+                    coroutineScope.launch {
+                        try {
+                            gameService.loggIn(Login(username.value, passcode.value))
+                        } catch (e: Exception) {
+                            errorMessage.value = e.message ?: "Unknown error"
+                        }
+                        if (gameService.isLoggedIn()) {
+                            navController.navigate("main") {
+                                popUpTo("main") { inclusive = true }
+                            }
                         }
                     }
+                }) {
+                    Text("Login!")
                 }
-            }) {
-                Text("Login!")
-            }
-            Button(onClick = {
-                navController.navigate("createAccount")
-            }) {
-                Text("Create account")
+                Button(onClick = {
+                    navController.navigate("createAccount")
+                }) {
+                    Text("Create account")
+                }
             }
         }
     }
