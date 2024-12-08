@@ -32,6 +32,7 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.Dp
 import androidx.navigation.NavController
 import com.example.cf_andriod_client.Services.GameService
+import com.example.cf_andriod_client.Services.connectionInterval
 import com.example.cf_andriod_client.classes.Game
 import com.example.cf_andriod_client.ui.theme.Typography
 import kotlinx.coroutines.delay
@@ -42,6 +43,7 @@ fun GamesList(gameService: GameService, navController: NavController, gameId: In
 
     val game = remember { mutableStateOf(Game()) }
     val userError = remember { mutableStateOf("") }
+    val hasPlayed = remember { mutableStateOf(false) }
 
     val scope = rememberCoroutineScope()
     LaunchedEffect(scope) {
@@ -49,8 +51,13 @@ fun GamesList(gameService: GameService, navController: NavController, gameId: In
             val newGameState = gameService.getGame(gameId)
             if (newGameState.board != game.value.board) userError.value = ""
             if (newGameState.redPlayer == "unknown") userError.value = "  Connection error"
+            println("${newGameState.winner != "TBD" && hasPlayed.value} ${newGameState.winner} ${hasPlayed.value}")
+            if (newGameState.winner != "TBD" && hasPlayed.value) {
+                navController.navigate("win/${newGameState.winner}")
+                hasPlayed.value = false
+            }
             game.value = newGameState
-            delay(1000)
+            delay(connectionInterval)
         }
     }
 
@@ -93,6 +100,7 @@ fun GamesList(gameService: GameService, navController: NavController, gameId: In
                                 runBlocking {
                                     try {
                                         gameService.makeMove(gameId, i)
+                                        hasPlayed.value = true
                                     } catch (e: Exception) {
                                         userError.value = e.message ?: "Unknown error"
                                     }

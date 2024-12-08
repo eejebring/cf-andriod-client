@@ -19,6 +19,8 @@ import io.ktor.http.Url
 import io.ktor.http.contentType
 
 const val gameServerUrl = "http://cf.ejebring.com"
+const val connectionInterval = 500L
+
 val loginUrl = Url("$gameServerUrl/login")
 val createAccountUrl = Url("$gameServerUrl/user")
 val playersUrl = Url("$gameServerUrl/users")

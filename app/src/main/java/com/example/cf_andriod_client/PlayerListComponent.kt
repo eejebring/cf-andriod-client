@@ -19,6 +19,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
 import com.example.cf_andriod_client.Services.GameService
+import com.example.cf_andriod_client.Services.connectionInterval
 import com.example.cf_andriod_client.classes.Challenge
 import com.example.cf_andriod_client.classes.Player
 import kotlinx.coroutines.delay
@@ -43,7 +44,7 @@ fun PlayerList(gameService: GameService) {
             challenges.clear()
             challenges.addAll(newChallenges)
 
-            delay(1000)
+            delay(connectionInterval)
         }
     }
 
@@ -68,7 +69,7 @@ fun PlayerList(gameService: GameService) {
                     Column {
                         Row {
                             Text(player.name)
-                            if (player.name != "Cannot connect to server") Text("Wins: ${player.wins}")
+                            if (player.name != "Cannot connect to server") Text("  Wins: ${player.wins}")
                         }
                         if (player.name != "Cannot connect to server") Text(
                             if (seenSecondsAgo < 10)

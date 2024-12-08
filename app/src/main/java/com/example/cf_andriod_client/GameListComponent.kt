@@ -12,6 +12,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import com.example.cf_andriod_client.Services.GameService
+import com.example.cf_andriod_client.Services.connectionInterval
 import com.example.cf_andriod_client.classes.Game
 import kotlinx.coroutines.delay
 
@@ -26,7 +27,7 @@ fun GamesList(gameService: GameService, navController: NavController) {
             val newGames = gameService.getGames()
             games.clear()
             games.addAll(newGames)
-            delay(1000)
+            delay(connectionInterval)
         }
     }
 

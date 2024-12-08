@@ -60,6 +60,11 @@ class MainActivity : ComponentActivity() {
                                     ?: throw Exception("No gameId provided for navigation")
                                 GamesList(gameService, navController, id)
                             }
+                            composable("win/{winner}") {
+                                val winner = it.arguments?.getString("winner")
+                                    ?: throw Exception("No winner provided for navigation")
+                                WinAnnouncerView(navController, winner)
+                            }
                         }
                     }
                 }
