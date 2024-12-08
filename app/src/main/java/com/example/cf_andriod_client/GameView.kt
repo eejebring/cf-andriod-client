@@ -47,7 +47,7 @@ fun GamesList(gameService: GameService, navController: NavController, gameId: In
     LaunchedEffect(scope) {
         while (true) {
             val newGameState = gameService.getGame(gameId)
-            if (newGameState.redPlayedLast != game.value.redPlayedLast) userError.value = ""
+            if (newGameState.board != game.value.board) userError.value = ""
             if (newGameState.redPlayer == "unknown") userError.value = "  Connection error"
             game.value = newGameState
             delay(1000)
@@ -60,7 +60,7 @@ fun GamesList(gameService: GameService, navController: NavController, gameId: In
             .verticalScroll(rememberScrollState())
     ) {
         val amRedPlayer = game.value.redPlayer == gameService.getUsername()
-        val isLocalTurn = game.value.redPlayedLast != amRedPlayer
+        val isLocalTurn = game.value.isRedTurn != amRedPlayer
 
         Row {
             Icon(

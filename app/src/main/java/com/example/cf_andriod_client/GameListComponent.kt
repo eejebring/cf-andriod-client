@@ -34,7 +34,7 @@ fun GamesList(gameService: GameService, navController: NavController) {
     LazyColumn {
         for ((gameId, game) in games) {
             val amRedPlayer = game.redPlayer == gameService.getUsername()
-            val isLocalTurn = game.redPlayedLast != amRedPlayer
+            val isLocalTurn = game.isRedTurn != amRedPlayer
 
             item {
                 Button(
