@@ -42,6 +42,7 @@ fun LoginView(navController: NavController, gameService: GameService) {
                     onValueChange = { passcode.value = it },
                     label = { Text("Passcode") }
                 )
+                Text("Warning do not use a real password!", color = Color.Yellow)
                 Button(onClick = {
                     errorMessage.value = ""
                     coroutineScope.launch {

@@ -7,7 +7,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.KeyboardArrowDown
-import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -87,8 +86,8 @@ fun GamesList(gameService: GameService, navController: NavController) {
                         modifier = Modifier.fillMaxWidth()
                     )
                     {
-                        if (game.winner == "NONE") Text("Draw")
-                        else if (game.winner == gameService.getUsername()) Text("You won!")
+                        if (game.winner == "NONE") Text("Draw!")
+                        else if (game.winner == gameService.getUsername()) Text("You won against ${game.winner}!")
                         else Text("You lost against ${game.winner}!")
                     }
                 }
