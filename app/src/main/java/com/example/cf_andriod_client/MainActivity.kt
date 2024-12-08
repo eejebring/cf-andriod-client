@@ -58,7 +58,7 @@ class MainActivity : ComponentActivity() {
                             composable("game/{id}") {
                                 val id = it.arguments?.getString("id")?.toInt()
                                     ?: throw Exception("No gameId provided for navigation")
-                                GamesList(gameService, id)
+                                GamesList(gameService, navController, id)
                             }
                         }
                     }
