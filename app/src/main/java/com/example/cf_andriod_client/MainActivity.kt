@@ -5,6 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -28,6 +29,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.cf_andriod_client.Services.GameService
 import com.example.cf_andriod_client.ui.theme.CfAndriodClientTheme
 import com.example.cf_andriod_client.ui.theme.Typography
+import io.ktor.util.converters.DelegatingConversionService
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
 
@@ -42,7 +44,7 @@ class MainActivity : ComponentActivity() {
             val gameService: GameService by viewModels()
             gameService.init(applicationContext)
 
-            CfAndriodClientTheme(darkTheme = false) {
+            CfAndriodClientTheme(darkTheme = isSystemInDarkTheme()) {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     Column(
                         modifier = Modifier
